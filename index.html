@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO-DO List app</title>
+
+    <!-- Font Awesome -->
+    <link 
+    rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" 
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" 
+    referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+
+
+<body>
+    <div class="container">
+    <div class="todoapp">
+        <h1>TO-DO List App</h1>
+        <div class="stat-container">
+            <div class="details">
+                <h3 id="progress-message">
+                    Ready to start 🚀
+                </h3>
+            <div class="progressbar">
+                <div id="progress"></div>
+           </div>
+        </div>
+        <div class="numbers">
+            <p id="numbers">0 / 0</p>
+        </div>
+    </div>
+        <form class="input-area">
+            <input type="text" id="task-input" placeholder="Add a new task..."> 
+            <button type="submit" id="add-task-btn"><i class="fa-solid fa-plus"></i></button>
+        </form>
+        <div class="todos-container">
+        <ul id="task-list"></ul></div>
+        <div class="empty-state">
+            <i class="fa-solid fa-file-circle-xmark icon"></i>
+            <h2>No tasks yet</h2>
+        </div>
+    </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@4.0.5/tsparticles.confetti.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
