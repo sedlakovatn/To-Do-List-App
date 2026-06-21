@@ -39,8 +39,25 @@
             <input type="text" id="task-input" placeholder="Add a new task..."> 
             <button type="submit" id="add-task-btn"><i class="fa-solid fa-plus"></i></button>
         </form>
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">
+                All
+            </button>
+        
+            <button class="filter-btn" data-filter="active">
+                Active
+            </button>
+        
+            <button class="filter-btn" data-filter="completed">
+                Completed
+            </button>
+        </div>
         <div class="todos-container">
         <ul id="task-list"></ul></div>
+        <button type="button" id="clear-completed-btn" class="clear-btn" title="Clear all completed tasks">
+            <i class="fa-solid fa-broom"></i>Clear Completed
+        </button>
+
         <div class="empty-state">
             <i class="fa-solid fa-file-circle-xmark icon"></i>
             <h2>No tasks yet</h2>

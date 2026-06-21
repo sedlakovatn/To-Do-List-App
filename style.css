@@ -149,6 +149,35 @@ body {
 
 
 }
+.filters {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.filter-btn {
+    flex: 1;
+    padding: 8px;
+
+    border: none;
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    background: rgba(255,255,255,0.2);
+    color: white;
+
+    transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.filter-btn.active {
+    background: #74b270;
+}
+
 
 .todos-container {
     display: flex;
@@ -178,7 +207,7 @@ width: 100%;
 box-shadow: 0 0 10px  rgba(0, 0, 0, 0.3);
 }
 
-#task-list li.checkbox {
+#task-list li .checkbox {
     min-width: 20px;
     height: 20px;
     border: 2px solid rgba(255, 255, 255, 0.3);
@@ -210,6 +239,26 @@ font-size: 1rem;
     flex: 1;
     margin-left: 10px;
     word-wrap: break-word;
+}
+
+.edit-input {
+    flex: 1;
+    margin-left: 10px;
+    padding: 4px 8px;
+
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+
+    font-size: inherit;
+    outline: none;
+}
+
+.edit-input:focus {
+    border-color: #74b270;
+    box-shadow: 0 0 0 2px rgba(116, 178, 112, 0.3);
 }
 
 #task-list li.completed span {
@@ -324,3 +373,28 @@ font-size: 1rem;
 
 }
 
+/* Clear Completed Button Styles */
+.clear-btn {
+    display: none; 
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    
+    background: transparent;
+    border: 1px solid rgba(255, 99, 110, 0.3);
+    color: #ff9fa6;
+    
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: -10px;
+}
+
+.clear-btn:hover {
+    background: rgba(220, 53, 69, 0.2);
+    color: #fff;
+    border-color: rgba(255, 99, 110, 0.6);
+    transform: translateY(-1px);
+}

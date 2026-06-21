@@ -7,6 +7,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressBar = document.getElementById('progress');
     const progressNumbers = document.getElementById('numbers');
     const progressMessage = document.getElementById('progress-message');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    let currentFilter = 'all';
+    const clearCompletedBtn = document.getElementById('clear-completed-btn');
+
+     // clear completed tasks
+    clearCompletedBtn.addEventListener('click', () => {
+        // Find all checkboxes that are currently checked
+        const completedCheckboxes = taskList.querySelectorAll('.checkbox:checked');
+        
+        // Loop through and remove their parent <li> elements
+        completedCheckboxes.forEach(checkbox => {
+            const li = checkbox.closest('li');
+            li.remove();
+        });
+
+        toggleEmptyState();
+        updateProgress(false); // Pass false so it doesn't trigger confetti again for an empty list
+        saveTasksToLocalStorage();
+    });
 
     // Show or hide empty state
     const toggleEmptyState = () => {
@@ -71,6 +90,13 @@ document.addEventListener('DOMContentLoaded', () => {
             taskList.querySelectorAll(
                 '.checkbox:checked'
             ).length;
+    // Show clear button only if there are completed tasks
+    if (completedTasks > 0) {
+    clearCompletedBtn.style.display = 'flex';
+    } else {
+    clearCompletedBtn.style.display = 'none';
+    }
+
     
         const progress =
             totalTasks > 0
@@ -206,27 +232,69 @@ document.addEventListener('DOMContentLoaded', () => {
                         : 'auto';
 
                 updateProgress();
+                applyFilter();
                 saveTasksToLocalStorage();
             }
         );
 
         // Edit task
-        editBtn.addEventListener(
-            'click',
-            () => {
-                if (!checkbox.checked) {
-                    taskInput.value =
-                        li.querySelector('span')
-                            .textContent;
+        editBtn.addEventListener('click', () => {
 
-                    li.remove();
+            if (checkbox.checked) return;
 
-                    toggleEmptyState();
-                    updateProgress(false);
-                    saveTasksToLocalStorage();
-                }
+            if (taskList.querySelector('.edit-input')) {
+                return;
             }
-        );
+        
+            const span = li.querySelector('span');
+            const currentText = span.textContent;
+        
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = currentText;
+            input.classList.add('edit-input');
+        
+            span.replaceWith(input);
+        
+            input.focus();
+            input.select();
+        
+            const saveEdit = () => {
+        
+                const newText = input.value.trim();
+        
+                if (!newText) {
+                    input.focus();
+                    return;
+                }
+        
+                const newSpan = document.createElement('span');
+                newSpan.textContent = newText;
+        
+                input.replaceWith(newSpan);
+        
+                saveTasksToLocalStorage();
+            };
+        
+            input.addEventListener('blur', saveEdit);
+        
+            input.addEventListener('keydown', (e) => {
+        
+                if (e.key === 'Enter') {
+                    saveEdit();
+                }
+        
+                if (e.key === 'Escape') {
+        
+                    const originalSpan =
+                        document.createElement('span');
+        
+                    originalSpan.textContent = currentText;
+        
+                    input.replaceWith(originalSpan);
+                }
+            });
+        });
 
         // Delete task
         li.querySelector('.delete-btn')
@@ -244,7 +312,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
         toggleEmptyState();
         updateProgress(checkCompletion);
+        applyFilter();
         saveTasksToLocalStorage();
+    }; 
+
+    // Filter function
+    const applyFilter = () => {
+
+        const tasks =
+            taskList.querySelectorAll('li');
+    
+        tasks.forEach(task => {
+    
+            const completed =
+                task.querySelector('.checkbox').checked;
+    
+            switch(currentFilter) {
+    
+                case 'active':
+                    task.style.display =
+                        completed ? 'none' : 'flex';
+                    break;
+    
+                case 'completed':
+                    task.style.display =
+                        completed ? 'flex' : 'none';
+                    break;
+    
+                default:
+                    task.style.display = 'flex';
+            }
+        });
     };
 
     // Load tasks
@@ -265,6 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         toggleEmptyState();
         updateProgress();
+        applyFilter();
     };
 
     // Add task button
@@ -289,8 +388,45 @@ document.addEventListener('DOMContentLoaded', () => {
     loadTasksFromLocalStorage();
 
 
+       // Button events - all active complete
+    filterButtons.forEach(button => {
+
+        button.addEventListener('click', () => {
+    
+            filterButtons.forEach(btn =>
+                btn.classList.remove('active')
+            );
+    
+            button.classList.add('active');
+    
+            currentFilter =
+                button.dataset.filter;
+    
+            applyFilter();
+        });
+    
+    });
+
+    // Clear completed tasks button click
+    clearCompletedBtn.addEventListener('click', () => {
+        const completedCheckboxes = taskList.querySelectorAll('.checkbox:checked');
+        
+        completedCheckboxes.forEach(checkbox => {
+            const li = checkbox.closest('li');
+            li.remove();
+        });
+
+        toggleEmptyState();
+        updateProgress(false); 
+        saveTasksToLocalStorage();
+    });
+    
     // Drag and drop board
 new Sortable(taskList, {
   animation: 150,
+ 
+  onEnd: function () {
+    saveTasksToLocalStorage();
+}
 });
 });
